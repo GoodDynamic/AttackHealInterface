@@ -1,28 +1,29 @@
-using System;
+using UnityEngine;
 
-[Serializable]
-public class Character
+[RequireComponent(typeof(CharacterView))]
+public class Character : MonoBehaviour
 {
-    private float _health;
-    private float _maxHealth;
-    private float _minHealth;
+    [SerializeField] private float _health;
+    [SerializeField] private float _maxHealth;
+    [SerializeField] private float _minHealth;
 
-    public float Health => _health;
+    private CharacterView _view;
 
-    public Character(float health,float minHealth,float maxHealth)
+    private void Awake()
     {
-        _health = health;
-        _maxHealth = maxHealth;
-        _minHealth = minHealth;
+        _view = GetComponent<CharacterView>();
+        _view.SetHealth(_health);
     }
 
     public void AddHealth(float healthPoint)
     {
         _health = _health + healthPoint > _maxHealth ? _maxHealth : _health + healthPoint;
+        _view.SetHealth(_health);
     }
 
     public void RemoveHealth(float healthPoint)
     {
         _health = _health - healthPoint < _minHealth ? _minHealth : _health - healthPoint;
+        _view.SetHealth(_health);
     }
 }
